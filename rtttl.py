@@ -33,6 +33,7 @@ class RTTTL:
         self.parse_defaults(tune_pieces[1])
 
     def parse_defaults(self, defaults):
+        # Example: d=4,o=5,b=140
         val = 0
         id = ' '
         for char in defaults:
