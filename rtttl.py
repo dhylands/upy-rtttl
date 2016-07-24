@@ -30,7 +30,6 @@ class RTTTL:
             raise ValueError('tune should contain exactly 2 colons')
         self.tune = tune_pieces[2]
         self.tune_idx = 0
-        self.tune_len = len(self.tune)
         self.parse_defaults(tune_pieces[1])
 
     def parse_defaults(self, defaults):
@@ -38,7 +37,7 @@ class RTTTL:
         id = ' '
         for char in defaults:
             char = char.lower()
-            if char >= '0' and char <= '9':
+            if char.isdigit():
                 val *= 10
                 val += ord(char) - ord('0')
                 if id == 'o':
@@ -73,17 +72,19 @@ class RTTTL:
             while char == ' ':
                 char = self.next_char()
 
-            # Parse duration, if present
+            # Parse duration, if present. A duration of 1 means a whole note.
+            # A duration of 8 means 1/8 note.
             duration = 0
-            while char >= '0' and char <= '9':
+            while char.isdigit():
                 duration *= 10
                 duration += ord(char) - ord('0')
                 char = self.next_char()
             if duration == 0:
                 duration = self.default_duration
 
-            if char == '|':
+            if char == '|': # marker for end of tune
                 return
+
             note = char.lower()
             if note >= 'a' and note <= 'g':
                 note_idx = ord(note) - ord('a')
@@ -92,26 +93,31 @@ class RTTTL:
             else:
                 note_idx = 7    # pause
             char = self.next_char()
+
+            # Check for sharp note
             if char == '#':
                 note_idx += 8
                 char = self.next_char()
+
+            # Check for duration modifier before octave
             # The spec has the dot after the octave, but some places do it
             # the other way around.
+            duration_multiplier = 1.0
             if char == '.':
                 duration_multiplier = 1.5
                 char = self.next_char()
-            else:
-                duration_multiplier = 1.0
+
+            # Check for octave
             if char >= '4' and char <= '7':
                 octave = ord(char) - ord('0')
                 char = self.next_char()
             else:
                 octave = self.default_octave
+
+            # Check for duration modifier after octave
             if char == '.':
                 duration_multiplier = 1.5
                 char = self.next_char()
-            else:
-                duration_multiplier = 1.0
 
             freq = NOTE[note_idx] * (1 << (octave - 4))
             msec = (self.msec_per_whole_note / duration) * duration_multiplier

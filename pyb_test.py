@@ -3,7 +3,7 @@
 # Board: https://www.ghielectronics.com/catalog/product/555
 #
 import pyb
-from RTTTL import RTTTL
+from rtttl import RTTTL
 import songs
 
 buz_tim = pyb.Timer(3, freq=440)
