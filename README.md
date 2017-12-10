@@ -30,16 +30,12 @@ for freq, msec in tune.notes()
     play_tone(freq, msec)
 ```
 
-When using a piezo you basically provide a 50% PWM signal to the piezo using the
-frequency of the note. Some piezo speakers can vary the volume by using a
-different duty cycle. The piezo on the G30DEV board I tested this on, it didn't
-seem to make any difference.
+When using a piezo you basically provide a 50% PWM signal to the piezo using the frequency of the note. Some piezo speakers can vary the volume by using a different duty cycle. The piezo on the G30DEV board Dave Hylands this on, it didn't seem to make any difference.
 
 In order to distinguish consequtive notes, you need a small gap between the notes.
-I chose to use 90% of the duration to play the tone, and 10% of duration to play
-silence.
+Dave Hylands chose to use 90% of the duration to play the tone, and 10% of duration to play silence.
 
-I used the following play_tone routine on the G30DEV board:
+Dave Hylands used the following play_tone routine on the G30DEV board:
 ```python
 import pyb
 buz_tim = pyb.Timer(3, freq=440)
@@ -54,7 +50,34 @@ def play_tone(freq, msec):
     pyb.delay(int(msec * 0.1))
 ```
 
-I put a recording of the above on YouTube: https://youtu.be/TadV2AEvfww
+Dave Hylands put a recording of the above on YouTube: https://youtu.be/TadV2AEvfww
 
 The G30DEV board definition files for MicroPython can be found here: https://github.com/dhylands/G30DEV
+
+David Glaude used the following play_tone routine on Circuit Python M0 board:
+```
+import board
+import pulseio
+import time
+
+speaker_pin   = board.D0  # Speaker is connected to this DIGITAL pin
+
+# Initialize input/output pins
+pwm       = pulseio.PWMOut(speaker_pin, variable_frequency=True, duty_cycle=0)
+
+def play_tone(freq, msec):
+#    print('freq = {:6.1f} msec = {:6.1f}'.format(freq, msec))
+    if freq > 0:
+        pwm.frequency  = int(freq)   # Set frequency
+        pwm.duty_cycle = 32767  # 50% duty cycle
+	time.sleep(msec*0.001)  # Play for a number of msec
+    pwm.duty_cycle = 0          # Stop playing
+    time.sleep(0.05)            # Delay 50 ms between notes
+```
+
+- circuit_test.py: Playing RTTTL on M0 Circuit Python board.
+- pc_test.py: Printing RTTTL decoding on any platform (no sound produced).
+- pyb_test.py: Playing RTTTL on G30DEV board.
+- rtttl.py: RTTTL decoding library.
+- songs.py: Optionnal collection of RTTTL songs to test the library.
 
