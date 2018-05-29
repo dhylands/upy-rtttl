@@ -13,7 +13,7 @@ You can find many more sample ring tones here: http://www.picaxe.com/RTTTL-Ringt
 
 You can find a description of RTTTL here: https://en.wikipedia.org/wiki/Ring_Tone_Transfer_Language
 
-# Using RTTTL on the pyboad
+# Using RTTTL on the pyboard
 
 Instantiate an instance of the RTTTL class, passing in the tune string to the
 constructor.
@@ -26,7 +26,7 @@ generator will return a tuple, where the first entry in the tuple contains
 the frequency of the note (in Hz) and the second entry in the tuple contains
 the duration of the note.
 ```python
-for freq, msec in tune.notes()
+for freq, msec in tune.notes():
     play_tone(freq, msec)
 ```
 
@@ -35,7 +35,7 @@ frequency of the note. Some piezo speakers can vary the volume by using a
 different duty cycle. The piezo on the G30DEV board I tested this on, it didn't
 seem to make any difference.
 
-In order to distinguish consequtive notes, you need a small gap between the notes.
+In order to distinguish consecutive notes, you need a small gap between the notes.
 I chose to use 90% of the duration to play the tone, and 10% of duration to play
 silence.
 
@@ -58,3 +58,11 @@ I put a recording of the above on YouTube: https://youtu.be/TadV2AEvfww
 
 The G30DEV board definition files for MicroPython can be found here: https://github.com/dhylands/G30DEV
 
+When using pin Y2 on a pyboard v1.0, change the timer/pin to:
+```python
+buz_tim = pyb.Timer(8, freq=440)
+buz_ch = buz_tim.channel(2, pyb.Timer.PWM, pin=pyb.Pin('Y2'), pulse_width=0)
+```
+
+To see which timers are available on which pins, consult the MicroPython quickref:
+http://docs.micropython.org/en/latest/pyboard/pyboard/quickref.html
