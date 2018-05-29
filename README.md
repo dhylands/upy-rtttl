@@ -58,3 +58,11 @@ I put a recording of the above on YouTube: https://youtu.be/TadV2AEvfww
 
 The G30DEV board definition files for MicroPython can be found here: https://github.com/dhylands/G30DEV
 
+When using pin Y2 on a pyboard v1.0, change the timer/pin to:
+```python
+buz_tim = pyb.Timer(8, freq=440)
+buz_ch = buz_tim.channel(2, pyb.Timer.PWM, pin=pyb.Pin('Y2'), pulse_width=0)
+```
+
+To see which timers are available on which pins, consult the MicroPython quickref:
+http://docs.micropython.org/en/latest/pyboard/pyboard/quickref.html
