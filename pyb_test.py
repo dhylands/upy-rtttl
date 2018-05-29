@@ -20,6 +20,8 @@ def play_tone(freq, msec):
 
 
 tune = RTTTL(songs.find('Entertainer'))
-for freq, msec in tune.notes():
-    play_tone(freq, msec)
-
+try:
+    for freq, msec in tune.notes():
+        play_tone(freq, msec)
+except KeyboardInterrupt:
+    play_tone(0, 0)
