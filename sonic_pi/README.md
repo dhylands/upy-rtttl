@@ -13,7 +13,7 @@ The first method uses the two files **sp_json.py** and **ringtone.rb** The forme
 is run in a terminal using `./sp_json.py` It requires read/write acces to its location as it generates a data file
 named **sptune.json** This is subsequently read by the program **ringtone.rb** which is run in Sonic Pi.
 The second requirement for the python script is that it needs the files rtttl.py and songs.py. Since these are in the 
-parent folder you should create soft links to these from the sonic_pi folder using
+parent folder you need soft links to these from the sonic_pi folder using
 
 ```ln -s ../rtttl.py rtttl.py```
 
@@ -21,7 +21,7 @@ and
 
 ```ln -s ../songs.py songs.py```
 
-respectively
+respectively. I have created these in the distribution for you.
 
 The second method is more elegant, not requiring any intermediate data file. However you will have to install
 an additional python library using
