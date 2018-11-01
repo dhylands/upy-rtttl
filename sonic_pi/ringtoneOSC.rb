@@ -9,8 +9,8 @@ use_osc "localhost",8000 #OSC server running on localhost in the python script
 #If the program is stopped completely, you must comment the lines again
 #for the first run to get the live_loops running again.
 
-osc "/abort"
-stop
+#osc "/abort"
+#stop
 
 live_loop :playring do #this live_loop receives and plays broadcast daat from the OSC server
   use_real_time
