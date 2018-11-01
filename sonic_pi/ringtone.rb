@@ -3,12 +3,12 @@
 #to create a .json format file containing two lists
 #'freqs' which contains a list of note frequencies
 #"durs which cotnains a correspending list of durations in msecs.
-#the file is loaded into SOnic Pi and teh two data lists extracted
+#the file is loaded into Sonic Pi and the two data lists extracted
 #they are then played using the chiplead synth
-#I've transposed the data down an octave in teh play command
-#conversion to sonic pi play format is easy using the buit in hz_to_midi command
+#I've transposed the data down an octave in the play command
+#conversion to sonic pi play format is easy using the built in hz_to_midi command
 
-#the list of songs refers to those songs whose darta in in the songs.py file
+#the list of songs refers to those songs whose data in in the songs.py file
 path= '/Users/rbn/src/upy-rtttl/' #path to python files adjust for your system.
 song_list=[ "Super Mario - Main Theme","Super Mario - Title Music","SMBtheme",
             "SMBwater","SMBunderground","Picaxe","The Simpsons","Indiana","TakeOnMe",
