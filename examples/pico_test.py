@@ -32,8 +32,15 @@ def play(tune):
     except KeyboardInterrupt:
         play_tone(0, 0)
 
+def find(name):
+    for song in songs.SONGS:
+        song_name = song.split(':')[0]
+        if song_name == name:
+            return song
+
 def play_song(search):
-    play(RTTTL(songs.find(search)))
+    play(RTTTL( find(search)) )
+
 
 # play songs from songs.py
 play_song('Entertainer')

@@ -1,7 +1,8 @@
 {
   "urls": [
+  	["rtplay.py", "github:mchobby/upy-rtttl/lib/rtplay.py"],
     ["rtttl.py", "github:mchobby/upy-rtttl/lib/rtttl.py"],
     ["songs.py", "github:mchobby/upy-rtttl/lib/songs.py"]
   ],
-  "version": "2.0"
+  "version": "2.1"
 }
