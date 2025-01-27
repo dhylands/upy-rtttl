@@ -63,6 +63,37 @@ buz_ch = buz_tim.channel(2, pyb.Timer.PWM, pin=pyb.Pin('Y2'), pulse_width=0)
 To see which timers are available on which pins, consult the MicroPython quickref:
 http://docs.micropython.org/en/latest/pyboard/pyboard/quickref.html
 
+# Using RTTTL on the Raspberry-Pi Pico
+Revision of the `play_tone()` function to make it working on Raspberry-Pi Pico (tested with MicroPython v1.24.0). 
+
+The Piezo buzzer is wired on the GP13 of the Pico (see [Pico-2-Explorer](https://shop.mchobby.be/product.php?id_product=2718) board for details)
+
+```
+from machine import Pin, PWM 
+from rtttl import RTTTL
+import songs
+import time
+
+PWM_VOL = 50 # 0..100 : reduce this to reduce the volume
+
+# Raspberry-Pi Pico / Pico 2
+buzzer = PWM( Pin( Pin.board.GP13 ) )
+buzzer.duty_u16( int(65535*PWM_VOL/100) ) # %Vol to duty cycle
+
+
+def play_tone(freq, msec):
+    print('freq = {:6.1f} msec = {:6.1f}'.format(freq, msec))
+    if freq > 0:
+        buzzer.freq(int(freq))
+        buzzer.duty_u16( int(65535*PWM_VOL/100) )
+    time.sleep_ms(int(msec * 0.9))
+    buzzer.duty_u16(0)
+    time.sleep_ms(int(msec * 0.1))
+
+```
+
+# Using RTTTL with CircuitPython
+
 David Glaude used the following play_tone routine on Circuit Python M0 board:
 ```
 import board
@@ -85,8 +116,10 @@ def play_tone(freq, msec):
 ```
 
 Files:
-- circuit_test.py: Playing RTTTL on M0 Circuit Python board.
-- pc_test.py: Printing RTTTL decoding on any platform (no sound produced).
-- pyb_test.py: Playing RTTTL on G30DEV board.
-- rtttl.py: RTTTL decoding library.
-- songs.py: Optionnal collection of RTTTL songs to test the library.
+
+* circuit_test.py: Playing RTTTL on M0 Circuit Python board.
+* pc_test.py: Printing RTTTL decoding on any platform (no sound produced).
+* pyb_test.py: Playing RTTTL on G30DEV board.
+* pico_test.py : Playing RTTTL on Raspberry-Pi Pico & Pico 2 boards.
+* rtttl.py: RTTTL decoding library.
+* songs.py: Optionnal collection of RTTTL songs to test the library.

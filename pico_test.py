@@ -9,7 +9,7 @@ from rtttl import RTTTL
 import songs
 import time
 
-PWM_VOL = 50 # 0.100 : reduce this to reduce the volume
+PWM_VOL = 50 # 0..100 : reduce this to reduce the volume
 
 # Raspberry-Pi Pico / Pico 2
 buzzer = PWM( Pin( Pin.board.GP13 ) )
