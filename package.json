@@ -1,6 +1,6 @@
 {
   "urls": [
-    ["rtttl.py", "github:mchobby/upy-rtttl/rtttl.py"]
+    ["rtttl.py", "github:mchobby/upy-rtttl/rtttl.py"],
     ["songs.py", "github:mchobby/upy-rtttl/songs.py"]
   ],
   "version": "0.2"
