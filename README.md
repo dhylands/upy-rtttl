@@ -1,8 +1,11 @@
 Ring Tone Text Transfer Language Parser
 =======================================
 
-This library can parse RTTTL text lines and delivers the frequency and duration
-for each note.
+__Ring Tone Text Transfer Language__ (RTTTL) was developed by Nokia to be used to transfer ringtones to cellphone by Nokia. So it represent music data for play on older mobile phones.
+
+![RTTTL with MicroPython](docs/_static/MicroPython-RTTTL-1024px.jpg)
+
+This RTTTL library can parse text lines and delivers the frequency and duration for each note.
 
 A typical RTTTL string looks like this:
 ```
@@ -12,6 +15,22 @@ Entertainer:d=4,o=5,b=140:8d,8d#,8e,c6,8e,c6,8e,2c.6,8c6,8d6,8d#6,8e6,8c6,8d6,e6
 You can find many more sample ring tones here: http://www.picaxe.com/RTTTL-Ringtones-for-Tune-Command/
 
 You can find a description of RTTTL here: https://en.wikipedia.org/wiki/Ring_Tone_Transfer_Language
+
+# Library
+Prior to run the examples you will need to install the rtttl library.
+
+On a WiFi capable plateform:
+
+```
+>>> import mip
+>>> mip.install("github:mchobby/upy-rtttl")
+```
+
+Or via the mpremote utility :
+
+```
+mpremote mip install github:mchobby/upy-rtttl
+```
 
 # Using RTTTL on the pyboard
 
@@ -63,6 +82,37 @@ buz_ch = buz_tim.channel(2, pyb.Timer.PWM, pin=pyb.Pin('Y2'), pulse_width=0)
 To see which timers are available on which pins, consult the MicroPython quickref:
 http://docs.micropython.org/en/latest/pyboard/pyboard/quickref.html
 
+# Using RTTTL on the Raspberry-Pi Pico
+Revision of the `play_tone()` function to make it working on Raspberry-Pi Pico (tested with MicroPython v1.24.0). 
+
+The Piezo buzzer is wired on the GP13 of the Pico (see [Pico-2-Explorer](https://shop.mchobby.be/product.php?id_product=2718) board for details)
+
+```
+from machine import Pin, PWM 
+from rtttl import RTTTL
+import songs
+import time
+
+PWM_VOL = 50 # 0..100 : reduce this to reduce the volume
+
+# Raspberry-Pi Pico / Pico 2
+buzzer = PWM( Pin( Pin.board.GP13 ) )
+buzzer.duty_u16( int(65535*PWM_VOL/100) ) # %Vol to duty cycle
+
+
+def play_tone(freq, msec):
+    print('freq = {:6.1f} msec = {:6.1f}'.format(freq, msec))
+    if freq > 0:
+        buzzer.freq(int(freq))
+        buzzer.duty_u16( int(65535*PWM_VOL/100) )
+    time.sleep_ms(int(msec * 0.9))
+    buzzer.duty_u16(0)
+    time.sleep_ms(int(msec * 0.1))
+
+```
+
+# Using RTTTL with CircuitPython
+
 David Glaude used the following play_tone routine on Circuit Python M0 board:
 ```
 import board
@@ -85,8 +135,10 @@ def play_tone(freq, msec):
 ```
 
 Files:
-- circuit_test.py: Playing RTTTL on M0 Circuit Python board.
-- pc_test.py: Printing RTTTL decoding on any platform (no sound produced).
-- pyb_test.py: Playing RTTTL on G30DEV board.
-- rtttl.py: RTTTL decoding library.
-- songs.py: Optionnal collection of RTTTL songs to test the library.
+
+* examples/circuit_test.py: Playing RTTTL on M0 Circuit Python board.
+* examples/pc_test.py: Printing RTTTL decoding on any platform (no sound produced).
+* examples/pyb_test.py: Playing RTTTL on G30DEV board.
+* examples/pico_test.py : Playing RTTTL on Raspberry-Pi Pico & Pico 2 boards.
+* lib/rtttl.py: RTTTL decoding library.
+* lib/songs.py: Optionnal collection of RTTTL songs to test the library.
